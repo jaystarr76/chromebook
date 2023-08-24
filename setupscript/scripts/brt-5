@@ -1,0 +1,3 @@
+#!/bin/sh
+brightnessctl s 5%-
+pkill -RTMIN+2 dwmblocks
