@@ -2,27 +2,45 @@
 
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
-static const unsigned int gappx     = 10;       /* gaps between windows */
+static const unsigned int gappx     = 0;       /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 1;        /* horizontal padding for statusbar */
 static const int vertpadbar         = 10;       /* vertical padding for statusbar */
-static const int vertpad            = 10;       /* vertical padding of bar */
-static const int sidepad            = 10;       /* horizontal padding of bar */
-static const char *fonts[]          = { "Liberation Mono:size=16" };
+static const int vertpad            = 0;       /* vertical padding of bar */
+static const int sidepad            = 0;       /* horizontal padding of bar */
+static const char *fonts[]          = {  "Liberation Mono:size=16", "Font Awesome:size=16" };
 static const char dmenufont[]       = "Liberation Mono:size=16";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#5f819d";
+static const char col_cyan[]        = "#005577";
+
+static const char nord_polar_darkest_blue[]     		   = "#2E3440";
+static const char nord_polar_darker_blue[]      		   = "#3B4252";
+static const char nord_polar_lighter_dark_blue[]       	  	   = "#434C5E";
+static const char nord_polar_lightest_dark_blue[]              	   = "#4C566A";
+static const char nord_dark_white[]    				   = "#D8DEE9";
+static const char nord_darker_white[]       			   = "#E5E9F0";
+static const char nord_white[]        				   = "#ECEFF4";
+static const char nord_white_dark[]       			   = "#d8dee9";
+static const char nord_frost_light_blue[]       		   = "#8FBCBB";
+static const char nord_frost_darker_light_blue[]    		   = "#88C0D0";
+static const char nord_frost_lighter_dark_blue[]       		   = "#81A1C1";
+static const char nord_frost_dark_blue[]       			   = "#5E81AC";
+static const char nord_red[]       				   = "#BF616A";
+static const char nord_orange[]        				   = "#D08770";
+static const char nord_yellow[]        				   = "#EBCB8B";
+static const char nord_green[]        				   = "#A3BE8C";
+static const char nord_purple[]        				   = "#B48EAD";
+
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm] = { nord_white, nord_polar_darkest_blue, nord_polar_darkest_blue },
+	[SchemeSel]  = { nord_polar_darkest_blue, nord_frost_darker_light_blue,  nord_red },
 };
-
 /* tagging */
 static const char *tags[] = { "", "", "", "", "", "",};
 
@@ -62,16 +80,17 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run",/* "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4,*/ NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *browser[]  = { "surf", "duckduckgo.com", NULL };
+static const char *browser[]  = { "opera", NULL };
 static const char *killall[]  = { "killall", "/usr/lib/Xorg",NULL };
-static const char *screenshot[] = { "flameshot", "launcher", NULL };
-static const char *upbright[]   = { "sudo", "brightnessctl", "s", "+5%", NULL };
-static const char *downbright[] = { "sudo", "brightnessctl", "s", "5%-",  NULL };
-static const char *upvol[] = { "upvol", NULL };
-static const char *downvol[] = { "downvol", NULL };
-static const char *mutevol[] = { "mutevol", NULL};
+static const char *brtup[] = { "brt+5", NULL };
+static const char *brtdn[] = { "brt-5", NULL };
+static const char *brtup1[] = { "brt+1", NULL };
+static const char *brtdn1[] = { "brt-1", NULL };
+static const char *volup[] = { "volup", NULL };
+static const char *voldn[] = { "voldn", NULL };
+static const char *volmt[] = { "volmt", NULL };
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd } },
@@ -111,12 +130,13 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY,			XK_F2,	   spawn,	   {.v = screenshot} },
-	{ MODKEY,                       XK_F7,     spawn,          {.v = upbright   } },
-	{ MODKEY,                       XK_F6,     spawn,          {.v = downbright } },
-	{ MODKEY, 			XK_F8,     spawn,	   {.v = mutevol} },
-	{ MODKEY, 			XK_F9, 	   spawn, 	   {.v = downvol} },
-	{ MODKEY, 			XK_F10,    spawn, 	   {.v = upvol} },
+	{ MODKEY,                       XK_F7,     spawn,          {.v = brtup } },
+	{ MODKEY,                       XK_F6,     spawn,          {.v = brtdn } },
+	{ MODKEY|ShiftMask,             XK_F7,     spawn,          {.v = brtup1 } },
+	{ MODKEY|ShiftMask,             XK_F6,     spawn,          {.v = brtdn1 } },
+	{ MODKEY, 			XK_F8,     spawn,	   {.v = volmt } },
+	{ MODKEY, 			XK_F9, 	   spawn, 	   {.v = voldn } },
+	{ MODKEY, 			XK_F10,    spawn, 	   {.v = volup } },
 /*	{ MODKEY|ShiftMask,             XK_p,      quit,           {0} },*/
 };
 
